@@ -1,68 +1,19 @@
-import { Dialect, Sequelize } from "sequelize";
-import { Options } from "sequelize";
-import Book from "../models/books"
-import dotenv from "dotenv";
-
+import { Sequelize } from "sequelize"
+import * as dotenv from "dotenv";
 
 
 dotenv.config();
 
-
-interface DatabaSeConfig extends Options{
-     host?:string,
-     dialect?:Dialect
-}
-
-
-interface Db{
-
-     sequelize:Sequelize,
-     model?:typeof Book
-
-}
-
-
-const connectDb=()=>{
-
-
-        let databaSeConfig :DatabaSeConfig={
-             
-            host:process.env.DB_HOST,
-            dialect:'mysql'
-
-             
-        }
-
-    try{
-
-        let sequelize = new Sequelize(
-            process.env.DB_NAME,process.env.DB_USER,process.env.DB_PASSWORD,databaSeConfig
-        )
-
-        // @ts-ignore
-        let db={
-            models:{}
-            
-        }
-        // @ts-ignore
-        db.sequelize=sequelize;
-        // @ts-ignore
-        db.Sequelize=Sequelize;
-        // @ts-ignore
-        db.models.Book= Book(sequelize);
-
-        return db;
-
-
-
-
-    }catch(e){
-
-       throw new Error(e);
+let sequelize = new Sequelize(
+    'libraryJSX', 'root', '582426',
+    {
+        host:'localhost',
+        dialect:'mysql',
     }
-}
+)
 
 
-let db= connectDb();
+sequelize.model
 
-export default db;
+
+export default sequelize

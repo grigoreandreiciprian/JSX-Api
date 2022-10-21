@@ -1,4 +1,6 @@
 import {DataTypes, Model, Sequelize} from "sequelize"
+import db from "../config/db"
+
 
 export interface BookAttributes{
     id?:number | null
@@ -8,8 +10,7 @@ export interface BookAttributes{
     year:number
 }
 
-export default (sequelize)=>{
-    class Book extends Model<BookAttributes>{};
+ export  class Book extends Model<BookAttributes>{};
 
     Book.init({
 
@@ -37,7 +38,6 @@ export default (sequelize)=>{
         author:{
             type:DataTypes.STRING,
             allowNull:false,
-
             validate:{
                 notNull:{
                     msg:'Plase provide a value for author',
@@ -51,17 +51,43 @@ export default (sequelize)=>{
 
         gendre:{
             type:DataTypes.STRING,
+            allowNull:false,
+
+            validate:{
+                notNull:{
+                    msg:'Plase provide a value for author',
+                },
+                notEmpty:{
+                    msg:'Plase provide a value for author'
+                }
+
+            }
         },
 
         year:{
-            type:DataTypes.INTEGER
+            type:DataTypes.INTEGER,
+
+            allowNull:false,
+
+            validate:{
+                notNull:{
+                    msg:'Plase provide a value for author',
+                },
+                notEmpty:{
+                    msg:'Plase provide a value for author'
+                }
+
+            }
         }
 
 
     },{
-        sequelize,
+        sequelize:db,
+        tableName:"books",
+        createdAt:false,
+        timestamps:false,
         
     });
 
-    return Book;
-}
+
+export default Book

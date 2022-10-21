@@ -13,13 +13,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
-let app = (0, express_1.default)();
+const db_1 = __importDefault(require("./config/db"));
+const books_1 = __importDefault(require("./models/books"));
+const bookRoute_1 = __importDefault(require("./routes/bookRoute"));
+const cors_1 = __importDefault(require("cors"));
 dotenv_1.default.config();
-app.use(express_1.default.json());
+let app = (0, express_1.default)();
 app.use((0, cors_1.default)());
-app.listen(3020, () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Express server is listening");
-}));
+app.use(express_1.default.json());
+app.use("/api/v1/books", bookRoute_1.default);
+db_1.default.sync().then((() => {
+    books_1.default.sync().then(() => {
+        app.listen(3020, () => __awaiter(void 0, void 0, void 0, function* () {
+            console.log("Express server is listening on port 3020 ");
+        }));
+    });
+})).catch(e => {
+    console.log(e.message);
+});
 //# sourceMappingURL=index.js.map

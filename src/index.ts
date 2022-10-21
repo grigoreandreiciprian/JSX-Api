@@ -1,25 +1,42 @@
  import express from "express";
 
- import cors from "cors"
-
  import dotenv from "dotenv"
+import db from "./config/db";
 
+import Book from "./models/books"
 
- let app = express()
+import router from "./routes/bookRoute"
+
+import cors from "cors"
+
 
  dotenv.config()
 
+ let app = express()
+
+ app.use(cors())
+ 
 
  app.use(express.json())
- app.use(cors())
 
 
- app.listen(3020, async()=>{
+ app.use("/api/v1/books", router)
 
-    console.log("Express server is listening")
+ 
 
- })
+ db.sync().then((()=>{
 
+  Book.sync().then(()=>{
 
+      app.listen(3020,async()=>{
 
+          console.log("Express server is listening on port 3020 ");
+      })
+  })
 
+ 
+})).catch(e=>{
+
+   console.log(e.message);
+});
+ 
